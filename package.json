@@ -1,0 +1,27 @@
+{
+  "name": "dart_feed",
+  "version": "1.0.0",
+  "description": "A news aggregation platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/charmingmarmot/dartfeed.git"
+  },
+  "keywords": [
+    "news",
+    "aggregation",
+    "mongodb",
+    "nodejs",
+    "javascript",
+    "tech"
+  ],
+  "author": "The A Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/charmingmarmot/dartfeed/issues"
+  },
+  "homepage": "https://github.com/charmingmarmot/dartfeed"
+}

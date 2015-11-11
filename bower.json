@@ -1,0 +1,27 @@
+{
+  "name": "dart_feed",
+  "version": "0.0.0",
+  "authors": [
+    "The Dart Feed A Team"
+  ],
+  "description": "A News Aggregation Platform",
+  "keywords": [
+    "News",
+    "Aggregation",
+    "nodejs",
+    "platform",
+    "fun",
+    "tech",
+    "mongodb",
+    "sql"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/charmingmarmot/dartfeed.git",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
