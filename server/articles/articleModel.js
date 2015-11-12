@@ -6,7 +6,7 @@ var ArticleSchema = new mongoose.Schema({
   summary: String,
   source: String,
   imgURL: String,
-  date: Date, // may need to change
+  date: Date, 
   categories: [ {categoryID: Number} ],
   visitsCount : Number,
   metadata : String
