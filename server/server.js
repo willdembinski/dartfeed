@@ -2,7 +2,7 @@ var express = require('express');
 var mongoose = require('mongoose'); 
 var router = require('./router.js'); 
 
-//TODO: connect to db 
+mongoose.connect('mongodb://localhost/dartfeed'); 
 
 var app = express();
 var expressRouter = express.Router(); 
