@@ -23,5 +23,9 @@
   "bugs": {
     "url": "https://github.com/charmingmarmot/dartfeed/issues"
   },
-  "homepage": "https://github.com/charmingmarmot/dartfeed"
+  "homepage": "https://github.com/charmingmarmot/dartfeed",
+  "dependencies": {
+    "express": "^4.13.3",
+    "mongoose": "^4.2.5"
+  }
 }

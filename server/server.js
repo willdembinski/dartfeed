@@ -1,15 +1,19 @@
-//normal connect stuff 
 var express = require('express'); 
 var mongoose = require('mongoose'); 
+var router = require('./router.js'); 
 
 //TODO: connect to db 
 
-//create routers 
+var app = express();
+var expressRouter = express.Router(); 
 
-//set up middleware (including router one)
+app.use('/', expressRouter); 
 
-//set up routes with controller handler 
+router(expressRouter); 
 
-//set up auth controller to handle req/res - include auth 
-//set up user controller to handle req/res - include lookup of prefs, following, h
-//set up articles controller to handle req/res - call model which calls DB 
+app.listen(8000); 
+
+module.exports = app; 
+
+
+
