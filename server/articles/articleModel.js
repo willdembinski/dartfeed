@@ -1,5 +1,10 @@
 var mongoose = require('mongoose');
 
+var ArticleCategorySchema = new mongoose.Schema({
+  categoryID: String,
+  name: String
+}, { _id: false});
+
 var ArticleSchema = new mongoose.Schema({
   title : String,
   linkURL: String,
@@ -7,7 +12,7 @@ var ArticleSchema = new mongoose.Schema({
   source: String,
   imgURL: String,
   date: Date, 
-  categories: [ {categoryID: String} ], //TO DO: need to prevent _id from being created here by mongoose
+  categories: [ ArticleCategorySchema ], 
   visitsCount : Number,
   metadata : String
 });

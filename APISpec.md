@@ -6,8 +6,8 @@
 
 Name | Description | Validation | Required?
 -----|------------- | --------- | ---
-popular | Popular articles | Bool | N
-category | Articles of the specified categories | Array of strings? | N
+popular | Popular articles | Bool | 
+category | Articles of the specified categories | Array of Strings | 
 
 #### Examples
 
@@ -24,13 +24,13 @@ Array of articles with each article defined by:
 
 Name | Description | Validation | Required?
 -----|------------- | --------- |------
-title | Article title | String | Y
-linkURL | Link to article | String | Y 
-summary | Snippet/summary | String | Y
-source | Publisher | String | Y
-imgURL | Image URL for article | String | N
-date | Date of publication | ISO:8601 String (use Date.prototype.toJSON()) | Y
-categories | Our assigned categories | Array of Strings | ?
+title | Article title | String | 
+linkURL | Link to article | String |  
+summary | Snippet/summary | String | 
+source | Publisher | String | 
+imgURL | Image URL for article | String | 
+date | Date of publication | ISO:8601 String (use Date.prototype.toJSON()) | 
+categories | Our assigned categories | Array of Strings | 
 
 #### Examples
 

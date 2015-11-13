@@ -39,5 +39,6 @@
     "prettyjson": "^1.1.3",
     "raw.js": "^0.4.0",
     "request": "^2.65.0"
+    "passport-facebook": "^2.0.0"
   }
 }

@@ -1,15 +1,14 @@
 var Article = require('./articleModel');
 var Category = require('../categories/categoryModel');
-var Q = require('q');
-
-// Trying to promisify with bluebird
 var Promise = require('bluebird');
 Promise.promisifyAll(require("mongoose"));
-///////////
+
 
 module.exports = {
 
-  // getArticles : function (req, res, next) {
+  getArticles : function (req, res, next) {
+
+  //   numPopularArticles = 5;
   //   // get query parameters for popular and for categories
 
   //   var popular = req.query.popular;
@@ -19,27 +18,42 @@ module.exports = {
   //     // get most popular articles
   //     // add these articles to the set, which we will return
 
-  //   if ( popular ) {
-      
+  //   if ( popular && categories) {
+  //     res.send('Must specify either popular OR categories, not both.');
+  //   } else if ( popular ) {
+  //     Article.find({}).sort({ visitsCount: -1 })
+  //       .then(function (topArticles) {
+  //         topArticles.splice(numPopularArticles,topArticles.length);
+  //         res.send(topArticles);
+  //         return topArticles;
+  //       }, function (err) {
+  //         console.error(err);
+  //       });
+  //   } else if ( categories) {
+  //     resBody = [];
+  //     categories.forEach(function (category) {
+        
+  //     });     
 
-  //   } 
 
-    // if ( categories ) 
-      // get all articles with the provided categories
-      // add these articles to the set, which we will return
+  //   }
 
-    // send articles
-  //},
+  //   if ( categories )
+  //     Category.find({})
+  //     // get all articles with the provided categories
+  //     // add these articles to the set, which we will return
+
+  //   // send articles
+  },
 
   insertArticles : function (req, res, next) {
-    console.log('I\'m in insertArticles!');
-
     var articleData = req.body;
-
     var artPromises = [];
 
     artPromises.push(req.body.forEach(function (articleData) {
       articleData.date = new Date(articleData.date);
+      articleData.visitsCount = 0;
+      articleData.metadata = 0; //for potential features later
       var catPromises = [];
       var catIndices = [];
 
@@ -49,11 +63,14 @@ module.exports = {
           .then(function (cat) {
             if ( cat ) {
               catIndices.push({categoryID : cat._id});
+              // TODO: add article to the category
               return;
             } else {
               return Category.create({name: category})
                 .then(function(newCat) {
                   catIndices.push({categoryID : newCat._id});
+                  // TODO: add article to the category
+
                 });
             }
           },function (err) {
