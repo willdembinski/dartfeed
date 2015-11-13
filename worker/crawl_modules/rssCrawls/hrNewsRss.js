@@ -2,6 +2,7 @@ var rssModule = require('./rssModule.js');
 
 var request = require('request');
 var cheerio = require('cheerio');
+var events = require("events");
 
 
 
@@ -11,36 +12,37 @@ function _imageRetrieveAsync(articleURL,options){
     request(articleURL,function(error,response,body){
       if(error){
         reject(error);
-      }else{
+      }else if(response.statusCode === 200){
         resolve(body);
       }
-    });
+    }).setMaxListeners(500);
   });
 }
+
+
+
 function _parseBody(body){
   $ = cheerio.load(body)
-  var possImgs = $('.img');
-  var nextPossImgs = $('img');
+  var possImgs = $('img');//ghetto - but the rss feedObjs literally link directly to the sources, no consistency possible.
+
   if(possImgs.length){
-    return possImgs[0].attribs.src ||  possImgs[0].attribs['alt'];//hopefully returns an image
-  }
-  if(nextPossImgs.length){
-    return nextPossImgs[0].attribs.src || nextPossImgs[0].attribs['title'];
+    return possImgs[0].attribs.src ||  possImgs[0].attribs['data'];//hopefully returns an image
   }
   return "http://zetasky.com/wp-content/uploads/2015/01/Blue-radial-gradient-background.png"
 
 }
 
 function _extractContent(input){
-  var $ = cheerio.load(input);
-  return ($('p').text()); //<-- this might be REALLY unreliable. But works for first test.
+  var $ = cheerio.load("<div class='mother'></div>");
+  $('div').append(input);
+  return ($('.mother').children()[0].prev.data) //<-- this might be REALLY unreliable. But works for first test.
 
 }
 
 
 function _feedParseAsync(){
-  var nprUrl="http://www.npr.org/rss/rss.php?id=1019";
-  var feedParser = new rssModule(nprUrl);
+  var hrNewsUrl="https://news.ycombinator.com/rss";
+  var feedParser = new rssModule(hrNewsUrl);
   return new Promise(function(resolve,reject){
     feedParser.parse(function(error,responses){
       if(error){
@@ -52,39 +54,37 @@ function _feedParseAsync(){
   });
 }
 
-function nprParser(){
+function hrNewsParser(){
   var self = this;
-  this.results = [];
   this.init = function(cb){
-    return _feedParseAsync().then(function(responses){
-      var result = [];
+    _feedParseAsync()
+    .then(function(responses){
       responses.forEach(function(response){
         _imageRetrieveAsync(response.link,{})
         .then(function(body){
-            mongoObj = {};
-            mongoObj.source = "NPR";
+            var mongoObj = {};
+            mongoObj.source = response.feed.name;
             mongoObj.title = response.title;
             mongoObj.linkURL = response.link;
             mongoObj.date = new Date(response.published).toISOString();
-            mongoObj.summary = _extractContent(response.content);
+            mongoObj.summary = response.title; //no other possible place to get this atm for this rss feed
             mongoObj.categories=[];
             mongoObj.imgURL = _parseBody(body).trim();
-            self.results.push(mongoObj);
-        }).then(function(){
-          cb(self.results);
+            cb(mongoObj);
         }).catch(function(err){
           console.log(err);
         })
-      });
+      })
     })
   }
 }
-module.exports = nprParser;
 
-var qq = new nprParser();
-qq.init(function(res){
-  console.log(res)
-});
+module.exports = hrNewsParser;
+
+// var qq = new hrNewsParser();
+// qq.init(function(res){
+//   console.log(res)
+// });
 
 
 
