@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 
 var UserProfileSchema = new mongoose.Schema({
  username: String,
- password: String,
+ fbToken: String,
+ fbId: Number, 
  categories: [ {categoryID: Number} ],
  history: [ {articleID: Number} ],
  following: [ {userID: Number} ],
