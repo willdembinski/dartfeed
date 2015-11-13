@@ -7,7 +7,7 @@ var ArticleSchema = new mongoose.Schema({
   source: String,
   imgURL: String,
   date: Date, 
-  categories: [ {name: String} ],
+  categories: [ {categoryID: String} ], //TO DO: need to prevent _id from being created here by mongoose
   visitsCount : Number,
   metadata : String
 });

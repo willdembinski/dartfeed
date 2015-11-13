@@ -33,104 +33,50 @@ module.exports = {
 
   insertArticles : function (req, res, next) {
     console.log('I\'m in insertArticles!');
-    //console.log(req.body);
 
     var articleData = req.body;
-    var numArticles = req.body.length;
-    //var articleData = req.body[i];
 
-    // removed for loop
+    var artPromises = [];
 
-    articleData.date = new Date(articleData.date);
-    // Category.findOne({ name : articleData.category }, function ( err, category ) {
-    //   if ( err ) {
-    //     console.error(err);
-    //     res.status(404);
-    //     res.send('Category match failure.');
-    //   } else {
-    //     articleData.category = category;
-        // var article = new Article(articleData);
-        // Article.create(articleData).
-        //   then ( function () {
-        //     console.log('Success');
-        //   }).
-        //   catch ( function(err) {
-        //     console.error(err);
-        //   });
-    
-    
+    artPromises.push(req.body.forEach(function (articleData) {
+      articleData.date = new Date(articleData.date);
+      var catPromises = [];
+      var catIndices = [];
 
+      articleData.categories.forEach(function (category) {
 
-//////////////////// Working promises
-
-    // Category.findOne({ name: articleData.categories[0].name}, '_id')
-    //   .then(function (category) {
-    //     articleData.categories[0].categoryID;
-    //     console.log(category);
-    //     return Category.findOne({ name: articleData.categories[0].name }, '_id');
-    //   })      
-    //   .then(function (category) {
-    //     console.log('I\'m here!');
-    //     console.log(category);
-    //   }, function (err) {
-    //     console.error(err);
-    //   });
-    var catPromises = [];
-    var catIndices = [];
-
-    articleData.categories.forEach( function (category) {
-
-      catPromises.push(Category.findOne({ name: category}, '_id')
-        .then(function (catID) {
-          if ( catID ) {
-            catIndices.push(catID);
-            return;
-          } else {
-            return Category.create({name: category});
-          }
-        }, function (err) {
-          console.error(err);
-        })
-      );
-    });
-    
-    Promise.all(catPromises).then(function () {
-      console.log(catIndices);
-      console.log('complete');
-    });
-
-          
-
-//////////////////////// Added Category
-
-    // Category.create({name: articleData.categories[0].name})
-    //   .then(function (category) {
-
-    //   }, function (err) {
-    //     console.log(err);
-    //   });
-
-/////////////////////// Q Attempt
-
-
-    // var findCategory = Q.nbind(Category.findOne, Category);
-    // findCategory({ name : articleData.category }, '_id')
-    //   .then(function (category) {
-    //     console.log(category);
-    //   });
-
-////////////////////////  Added Article
-    // Article.create(articleData)
-    //   .then(function (article) {
-    //     res.send();
-    //   }, function (err) {
-    //     console.log(err);
-    //   });
+        catPromises.push(Category.findOne({ name: category}, '_id')
+          .then(function (cat) {
+            if ( cat ) {
+              catIndices.push({categoryID : cat._id});
+              return;
+            } else {
+              return Category.create({name: category})
+                .then(function(newCat) {
+                  catIndices.push({categoryID : newCat._id});
+                });
+            }
+          },function (err) {
+            console.error(err);
+          })
+        );
+      });
       
-///////////////////////
+      Promise.all(catPromises).then(function () {
+        articleData.categories = catIndices;
+        Article.create(articleData)
+        .then( function () {
+          console.log('Article written successfully!');
+        }, function(err) {
+          console.error(err);
+        });
+      });
 
-    //   }
-    // });
+    }));
+
+    Promise.all(artPromises).then(function() {
+      res.send();
+    });
 
   }
 }
