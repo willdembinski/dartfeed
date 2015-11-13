@@ -1,5 +1,6 @@
 var Article = require('./articleModel');
 var Category = require('../categories/categoryModel');
+var Q = require('q');
 
 module.exports = {
 
@@ -50,6 +51,22 @@ module.exports = {
         //   catch ( function(err) {
         //     console.error(err);
         //   });
+    
+    
+
+    // Category.findOne({ name: articleData.category })
+
+    Category.create({name: articleData.categories[0].categoryID})
+      .then(function (category) {
+
+      }, function (err) {
+        console.log(err);
+      });
+    // var findCategory = Q.nbind(Category.findOne, Category);
+    // findCategory({ name : articleData.category }, '_id')
+    //   .then(function (category) {
+    //     console.log(category);
+    //   });
     Article.create(articleData)
       .then(function (article) {
         res.send();
