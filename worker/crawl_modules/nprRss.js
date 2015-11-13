@@ -19,33 +19,28 @@ function _imageRetrieveAsync(articleURL,options){
 }
 function _parseBody(body){
   $ = cheerio.load(body)
-  var possImgs = $('span.imageContainer img');
-  var nextPossImgs = $('span.imageContainer img');
-  var lastDitchEffort = $('img');
+  var possImgs = $('.img');
+  var nextPossImgs = $('img');
   if(possImgs.length){
-    return possImgs[0].attribs.src ||  possImgs[0].attribs['data-original'];//hopefully returns an image
+    return possImgs[0].attribs.src ||  possImgs[0].attribs['alt'];//hopefully returns an image
   }
   if(nextPossImgs.length){
-    return nextPossImgs[0].attribs.src || nextPossImgs[0].attribs['data-original'];
-  }
-  if(lastDitchEffort.length){
-    return lastDitchEffort[0].attribs.src || lastDitchEffort[0].attribs['data-original'];
+    return nextPossImgs[0].attribs.src || nextPossImgs[0].attribs['title'];
   }
   return "http://zetasky.com/wp-content/uploads/2015/01/Blue-radial-gradient-background.png"
 
 }
 
 function _extractContent(input){
-  var $ = cheerio.load("<div class='mother'></div>");
-  $('div').append(input);
-  return ($('.mother').children()[0].prev.data) //<-- this might be REALLY unreliable. But works for first test.
+  var $ = cheerio.load(input);
+  return ($('p').text()); //<-- this might be REALLY unreliable. But works for first test.
 
 }
 
 
 function _feedParseAsync(){
-  var cnetRssUrl="http://www.cnet.com/rss/news/";
-  var feedParser = new rssModule(cnetRssUrl);
+  var nprUrl="http://www.npr.org/rss/rss.php?id=1019";
+  var feedParser = new rssModule(nprUrl);
   return new Promise(function(resolve,reject){
     feedParser.parse(function(error,responses){
       if(error){
@@ -57,7 +52,7 @@ function _feedParseAsync(){
   });
 }
 
-function cnetParser(){
+function nprParser(){
   var self = this;
   this.results = [];
   this.init = function(cb){
@@ -67,7 +62,7 @@ function cnetParser(){
         _imageRetrieveAsync(response.link,{})
         .then(function(body){
             mongoObj = {};
-            mongoObj.source = "CNET";
+            mongoObj.source = "NPR";
             mongoObj.title = response.title;
             mongoObj.linkURL = response.link;
             mongoObj.date = new Date(response.published).toISOString();
@@ -84,9 +79,9 @@ function cnetParser(){
     })
   }
 }
-module.exports = cnetParser;
+module.exports = nprParser;
 
-var qq = new cnetParser();
+var qq = new nprParser();
 qq.init(function(res){
   console.log(res)
 });
