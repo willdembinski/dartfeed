@@ -1,7 +1,6 @@
 var express = require('express'); 
 var session = require('express-session');
 var mongoose = require('mongoose'); 
-var bodyParser = require('body-parser');
 var router = require('./router.js'); 
 var bodyParser = require('body-parser'); 
 var cookieParser = require('cookie-parser'); 
@@ -9,6 +8,7 @@ var passport = require('passport')
 var FacebookStrategy = require('passport-facebook').Strategy;
 var config = require('./config.js'); 
 var User = require('./users/userModel.js'); 
+var logger = require('./middleware/logger')
 
 mongoose.connect('mongodb://localhost/dartfeed'); 
 
@@ -56,6 +56,7 @@ passport.use(new FacebookStrategy({
 ));
 
 
+app.use(logger);
 app.use(bodyParser.json());
 app.use('/', expressRouter); 
 

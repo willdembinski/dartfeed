@@ -1,7 +1,7 @@
-var Article = require('./articles/articleModel');
+var Article = require('./articleModel');
 var Category = require('../categories/categoryModel');
 
-module.exports {
+module.exports = {
 
   // getArticles : function (req, res, next) {
   //   // get query parameters for popular and for categories
@@ -23,34 +23,43 @@ module.exports {
       // add these articles to the set, which we will return
 
     // send articles
-  },
+  //},
 
-  postArticles : function (req, res, next) {
-    // iterate through the array of articles
-    // write each of the articles to the database
-    for ( var i = 0; i < req.body.length; i ++ ) {
-      var articleData = req.body[i];
-      articleData.date = new Date(articleData.date);
-      Category.findOne({ name : articleData.category }, function ( err, category ) {
-        if ( error ) {
-          console.error(err);
-        } else {
-          articleData.category = category;
-          var article = new Article(articleData);
-          article.save().
-            then ( function (err) {
-              if ( error ) {
-                console.error(err);
-              } else {
-                res.send('Your articles have been successfully received.');
-              }
-            });
-        }
+  insertArticles : function (req, res, next) {
+    console.log('I\'m in insertArticles!');
+    //console.log(req.body);
 
+    var articleData = req.body;
+    //var articleData = req.body[i];
+
+    // removed for loop
+
+    articleData.date = new Date(articleData.date);
+    // Category.findOne({ name : articleData.category }, function ( err, category ) {
+    //   if ( err ) {
+    //     console.error(err);
+    //     res.status(404);
+    //     res.send('Category match failure.');
+    //   } else {
+    //     articleData.category = category;
+        // var article = new Article(articleData);
+        // Article.create(articleData).
+        //   then ( function () {
+        //     console.log('Success');
+        //   }).
+        //   catch ( function(err) {
+        //     console.error(err);
+        //   });
+    Article.create(articleData)
+      .then(function (article) {
+        res.send();
+      }, function (err) {
+        console.log(err);
       });
+      
 
-    }
-
+    //   }
+    // });
 
   }
 }
