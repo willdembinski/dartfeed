@@ -9,15 +9,11 @@ var ArticleCategorySchema = new mongoose.Schema({
   date: Date, 
   visitsCount : Number,
   metadata : String
-});
+}, { _id : false});
 
-//
-
-
-
-//
 var CategorySchema = new mongoose.Schema({
   name: String,
+  articles : [ArticleCategorySchema]
 
 });
 

@@ -55,20 +55,20 @@ module.exports = {
       articleData.visitsCount = 0;
       articleData.metadata = 0; //for potential features later
       var catPromises = [];
-      var catIndices = [];
+      var catData = [];
 
       articleData.categories.forEach(function (category) {
 
-        catPromises.push(Category.findOne({ name: category}, '_id')
+        catPromises.push(Category.findOne({ name: category})
           .then(function (cat) {
             if ( cat ) {
-              catIndices.push({categoryID : cat._id});
+              catData.push({categoryID : cat._id}, {name: cat.name});
               // TODO: add article to the category
               return;
             } else {
               return Category.create({name: category})
                 .then(function(newCat) {
-                  catIndices.push({categoryID : newCat._id});
+                  catData.push({categoryID : newCat._id}, {name: newCat.name});
                   // TODO: add article to the category
 
                 });
@@ -80,7 +80,7 @@ module.exports = {
       });
       
       Promise.all(catPromises).then(function () {
-        articleData.categories = catIndices;
+        articleData.categories = catData;
         Article.create(articleData)
         .then( function () {
           console.log('Article written successfully!');

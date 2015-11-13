@@ -12,7 +12,7 @@ var ArticleSchema = new mongoose.Schema({
   source: String,
   imgURL: String,
   date: Date, 
-  categories: [ ArticleCategorySchema ], 
+  categories: [ArticleCategorySchema], 
   visitsCount : Number,
   metadata : String
 });
