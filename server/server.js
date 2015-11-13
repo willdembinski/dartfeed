@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var passport = require('passport')
 var FacebookStrategy = require('passport-facebook').Strategy;
 var config = require('./config.js'); 
+var User = require('./users/userModel.js'); 
 
 mongoose.connect('mongodb://localhost/dartfeed'); 
 
@@ -27,28 +28,40 @@ app.use(passport.session());
 passport.use(new FacebookStrategy({
     clientID: config.fbClientID,
     clientSecret: config.fbClientSecret,
-    callbackURL: config.fbCallback, 
-    profileFields: ['email', 'profileUrl']
+    callbackURL: config.fbCallback 
+    //profileFields: ['email', 'profileUrl']
   },
   function(accessToken, refreshToken, profile, done) {
     process.nextTick(function(){
       console.log(accessToken);
       console.log(refreshToken);
       console.log(profile);
+
+      ///store in the db 
+      User.findOne({fbId:profile.id}, function(err, user){
+        if(!user){
+          User.create({
+            username: profile.displayName,
+            fbToken: accessToken, 
+            fbId: profile.id
+          })
+        } else {
+          console.log(err);
+        }
+      });
       done(null, profile); 
     })
-    // User.findOrCreate(, function(err, user) {
-    //   if (err) { return done(err); }
-    //   done(null, user);
-    // });
   }
 ));
+
 
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
+  console.log("deserializeUser");
+  //console.log(user);
   done(null, user);
 });
 
