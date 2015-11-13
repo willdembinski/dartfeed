@@ -2,6 +2,11 @@ var Article = require('./articleModel');
 var Category = require('../categories/categoryModel');
 var Q = require('q');
 
+// Trying to promisify with bluebird
+var Promise = require('bluebird');
+Promise.promisifyAll(require("mongoose"));
+///////////
+
 module.exports = {
 
   // getArticles : function (req, res, next) {
@@ -31,6 +36,7 @@ module.exports = {
     //console.log(req.body);
 
     var articleData = req.body;
+    var numArticles = req.body.length;
     //var articleData = req.body[i];
 
     // removed for loop
@@ -54,26 +60,74 @@ module.exports = {
     
     
 
-    // Category.findOne({ name: articleData.category })
 
-    Category.create({name: articleData.categories[0].categoryID})
-      .then(function (category) {
+//////////////////// Working promises
 
-      }, function (err) {
-        console.log(err);
-      });
+    // Category.findOne({ name: articleData.categories[0].name}, '_id')
+    //   .then(function (category) {
+    //     articleData.categories[0].categoryID;
+    //     console.log(category);
+    //     return Category.findOne({ name: articleData.categories[0].name }, '_id');
+    //   })      
+    //   .then(function (category) {
+    //     console.log('I\'m here!');
+    //     console.log(category);
+    //   }, function (err) {
+    //     console.error(err);
+    //   });
+    var catPromises = [];
+    var catIndices = [];
+
+    articleData.categories.forEach( function (category) {
+
+      catPromises.push(Category.findOne({ name: category}, '_id')
+        .then(function (catID) {
+          if ( catID ) {
+            catIndices.push(catID);
+            return;
+          } else {
+            return Category.create({name: category});
+          }
+        }, function (err) {
+          console.error(err);
+        })
+      );
+    });
+    
+    Promise.all(catPromises).then(function () {
+      console.log(catIndices);
+      console.log('complete');
+    });
+
+          
+
+//////////////////////// Added Category
+
+    // Category.create({name: articleData.categories[0].name})
+    //   .then(function (category) {
+
+    //   }, function (err) {
+    //     console.log(err);
+    //   });
+
+/////////////////////// Q Attempt
+
+
     // var findCategory = Q.nbind(Category.findOne, Category);
     // findCategory({ name : articleData.category }, '_id')
     //   .then(function (category) {
     //     console.log(category);
     //   });
-    Article.create(articleData)
-      .then(function (article) {
-        res.send();
-      }, function (err) {
-        console.log(err);
-      });
+
+////////////////////////  Added Article
+    // Article.create(articleData)
+    //   .then(function (article) {
+    //     res.send();
+    //   }, function (err) {
+    //     console.log(err);
+    //   });
       
+///////////////////////
 
     //   }
     // });
