@@ -5,7 +5,6 @@ var cheerio = require('cheerio');
 
 
 
-
 function _imageRetrieveAsync(articleURL,options){
 
   return new Promise(function(resolve,reject){
@@ -18,23 +17,35 @@ function _imageRetrieveAsync(articleURL,options){
     });
   });
 }
-
 function _parseBody(body){
   $ = cheerio.load(body)
-  var possImgs = $("img.js-image-replace");
-  var nextPossImgs = $('img');
+  var possImgs = $('span.imageContainer img');
+  var nextPossImgs = $('span.imageContainer img');
+  var lastDitchEffort = $('img');
   if(possImgs.length){
-    return possImgs[0].attribs.src ||  possImgs[0].attribs['datasrc'];//hopefully returns an image
+    return possImgs[0].attribs.src ||  possImgs[0].attribs['data-original'];//hopefully returns an image
   }
   if(nextPossImgs.length){
-    return nextPossImgs[3].attribs.src;
+    return nextPossImgs[0].attribs.src || nextPossImgs[0].attribs['data-original'];
   }
-  return "http://zetasky.com/wp-content/uploads/2015/01/Blue-radial-gradient-background.png" //fallback
+  if(lastDitchEffort.length){
+    return lastDitchEffort[0].attribs.src || lastDitchEffort[0].attribs['data-original'];
+  }
+  return "http://zetasky.com/wp-content/uploads/2015/01/Blue-radial-gradient-background.png"
+
 }
 
+function _extractContent(input){
+  var $ = cheerio.load("<div class='mother'></div>");
+  $('div').append(input);
+  return ($('.mother').children()[0].prev.data) //<-- this might be REALLY unreliable. But works for first test.
+
+}
+
+
 function _feedParseAsync(){
-  var bbcUrl="http://feeds.bbci.co.uk/news/technology/rss.xml";
-  var feedParser = new rssModule(bbcUrl);
+  var hrnewsRssUrl="http://www.cnet.com/rss/news/";
+  var feedParser = new rssModule(hrnewsRssUrl);
   return new Promise(function(resolve,reject){
     feedParser.parse(function(error,responses){
       if(error){
@@ -46,40 +57,46 @@ function _feedParseAsync(){
   });
 }
 
-function bbcParser(){  //pass init a callback and vroom vroom to the boom boom.
+function cnetParser(){
   var self = this;
-  this.results = [];
   this.init = function(cb){
-    return _feedParseAsync().then(function(responses){
-      var result = [];
+    _feedParseAsync().then(function(responses){
       responses.forEach(function(response){
-        console.log(response.feed.link)
         _imageRetrieveAsync(response.link,{})
         .then(function(body){
             mongoObj = {};
-            mongoObj.source = "BBC";
+            mongoObj.source = "CNET";
             mongoObj.title = response.title;
             mongoObj.linkURL = response.link;
             mongoObj.date = new Date(response.published).toISOString();
-            mongoObj.summary = response.content;
+            mongoObj.summary = _extractContent(response.content);
             mongoObj.categories=[];
             mongoObj.imgURL = _parseBody(body).trim();
-            self.results.push(mongoObj);
-        }).then(function(){
-          cb(self.results);
+            cb(mongoObj);
         }).catch(function(err){
           console.log(err);
-        })
+        });
       });
-    })
+    });
   }
 }
-var qq = new bbcParser();
+module.exports = cnetParser;
 
-qq.init(function(results){
-  console.log(results);
-})
+// var qq = new cnetParser();
+// qq.init(function(res){
+//   console.log(res)
+// });
 
 
 
-module.exports = bbcParser;
+
+
+
+
+
+
+
+
+
+
+

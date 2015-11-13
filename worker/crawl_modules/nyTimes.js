@@ -21,8 +21,6 @@ var qString = {
 
 //http://api.nytimes.com/svc/search/v2/articlesearch.response-format?[q=search term&fq=filter-field:(filter-term)&additional-params=values]&api-key=####
 
-
-
 var options = {
   host: 'api.nytimes.com',
   path: '/svc/search/v2/articlesearch.json?q="technology"&fq=source:("The+New+York+Times")&api-key='+qString.apiKey  //TODO:  query vs section name vs source etc needs to be ironed out.
