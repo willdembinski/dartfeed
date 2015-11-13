@@ -16,7 +16,6 @@ module.exports = function (router) {
   router.get('/api/auth/facebook/callback',
   passport.authenticate('facebook', { successRedirect: '/api/auth/callback', failureRedirect: '/api/auth/signin' }));
 
-
   // ARTICLES
   // GET /api/articles
     // when we get articles of a specific category, would it make sense to create an articleID within the categories collection and reference
