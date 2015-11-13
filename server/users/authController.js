@@ -20,6 +20,8 @@ module.exports = {
    
   signin: function (req, res, next){
 
+    res.end("sign in page")
+
   }, 
 
 
@@ -28,6 +30,11 @@ module.exports = {
   }, 
 
   signout: function (req, res, next){
+
+  }, 
+
+  callback: function (req, res, next){
+    res.send("callback happened")
 
   }
 
