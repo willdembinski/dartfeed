@@ -1,6 +1,7 @@
 var express = require('express'); 
 var session = require('express-session');
 var mongoose = require('mongoose'); 
+var bodyParser = require('body-parser');
 var router = require('./router.js'); 
 var bodyParser = require('body-parser'); 
 var cookieParser = require('cookie-parser'); 
@@ -54,6 +55,9 @@ passport.use(new FacebookStrategy({
   }
 ));
 
+
+app.use(bodyParser.json());
+app.use('/', expressRouter); 
 
 passport.serializeUser(function(user, done) {
   done(null, user);

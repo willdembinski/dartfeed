@@ -7,7 +7,7 @@
 Name | Description | Validation | Required?
 -----|------------- | --------- | ---
 popular | Popular articles | Bool | N
-category | Articles of the specific category | String? | N
+category | Articles of the specified categories | Array of strings? | N
 
 #### Examples
 
