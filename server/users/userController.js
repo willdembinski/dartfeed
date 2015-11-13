@@ -2,6 +2,8 @@ var User = require('./userModel.js');
 
 module.exports = {
 
+  
+
   addUserTest : function(req, res, next) {
     User.create({ 
       categories: [ { categoryID: 1 } ],
