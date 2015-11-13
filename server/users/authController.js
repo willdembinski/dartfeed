@@ -3,34 +3,20 @@ var body = require('body-parser');
 
 module.exports = {
 
-  signup: function (req, res, next){
-    console.log(req.body);
-    //create new user with username/pw and save to mongo
-    var username = req.body.username; 
-    var password = req.body.password; 
+  checkAuth: function(req, res, next) {
+    if (req.isAuthenticated()) {
+       return next();
+    } else {
+       return res.send(401);
+    }
+  },
 
-    User.create({
-      username: username, 
-      password: password
-    }); 
-
-    //setup pre-step to hash pw
-
+  protectedPage: function (req, res, next){
+    res.send("protected page"); 
   },
    
   signin: function (req, res, next){
-
-    res.end("sign in page")
-
-  }, 
-
-
-  check: function (req, res, next){
-
-  }, 
-
-  signout: function (req, res, next){
-
+    res.end("sign in with FB page")
   }, 
 
   callback: function (req, res, next){
