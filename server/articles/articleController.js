@@ -61,16 +61,20 @@ module.exports = {
 
         catPromises.push(Category.findOne({ name: category})
           .then(function (cat) {
+            var temp = articleData.categories;
+            delete articleData.categories;
             if ( cat ) {
-              catData.push({categoryID : cat._id}, {name: cat.name});
-              // TODO: add article to the category
-              return;
+              catData.push({categoryID : cat._id, name: cat.name});
+              cat.articles.push(articleData);
+              console.log(cat.articles); 
+              articleData.categories = temp;
+              return cat.save();
             } else {
-              return Category.create({name: category})
-                .then(function(newCat) {
-                  catData.push({categoryID : newCat._id}, {name: newCat.name});
-                  // TODO: add article to the category
 
+              return Category.create({name: category, articles: [articleData]})
+                .then(function(newCat) {
+                  articleData.categories = temp;
+                  catData.push({categoryID : newCat._id, name: newCat.name});
                 });
             }
           },function (err) {
