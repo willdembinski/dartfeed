@@ -24,9 +24,9 @@ module.exports = {
 
   callback: function (req, res, next){
     //send back user.id in the response - client will write out localstorage value 
-    console.log(req.user);
+    console.log("cb user", req.user);
     //res.send(req.user); //client needs to write this out
-    res.send(200);
+    res.redirect('/#/user');
 
   }
 

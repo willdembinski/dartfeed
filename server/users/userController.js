@@ -2,6 +2,12 @@ var User = require('./userModel.js');
 
 module.exports = {
 
+  getCurrentUser: function (req, res, next){
+    console.log(req.user);
+    var user = req.user; 
+    res.send(user); 
+  },
+
   getUser: function(req, res, next){
     User.find({fbId: req.params.user_id}, function (err, user){
       if(err){

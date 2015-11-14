@@ -1,6 +1,15 @@
 angular.module('dartnews.services', [])
-.factory('Feed', function (){
+.factory('Feed', function ($http){
 
-  return true; 
+  var getUserProfile = function (){
+    return $http({
+      url: '/api/user', 
+      method: 'GET'
+    });
+  }
+
+  return {
+    getUserProfile: getUserProfile
+  }
 
 })
