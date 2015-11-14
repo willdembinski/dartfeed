@@ -8,10 +8,13 @@ var articleController = require('./articles/articleController');
 
 module.exports = function (router) {
   router.get('/api/users', userController.getAllUsers);
-  router.get('/api/users/:user_id', userController.getUser);
-  router.put('/api/users/:user_id', userController.updateUser);
+  router.get('/api/user', userController.getCurrentUser);
+  router.get('/api/user/:user_id', userController.getUser);
+  router.put('/api/user/:user_id', userController.updateUser);
   router.get('/api/auth/signin', authController.signin); 
   router.get('/api/auth/protected', authController.checkAuth, authController.protectedPage); 
+
+
   router.get('/api/auth/callback', authController.callback)
   router.get('/api/auth/facebook', passport.authenticate('facebook'));
   router.get('/api/auth/facebook/callback',
@@ -25,9 +28,9 @@ module.exports = function (router) {
   // POST /api/articles
     // accept an array of articles 
 
-  router.get('/api/articles', articleController.getArticles);
+  //router.get('/api/articles', articleController.getArticles);
 
-  router.post('/api/articles', articleController.insertArticles);
+  //router.post('/api/articles', articleController.insertArticles);
 
   // CATEGORIES?
   // how do we handle inserting categories?

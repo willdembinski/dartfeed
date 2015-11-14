@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app='dartnews'>
+  <head>
+    <meta charset="utf-8" />
+    <title>Dart News</title>
+    <link rel="stylesheet" type="text/css" href="styles/style.css" />
+  </head>
+  <body>
+
+    <!-- the ng-view directive is where our templates will be loaded into when naviagted to -->
+    <header>
+      <a href="/api/auth/facebook">Sign in with FB</a>
+
+    </header>
+    <div ng-view></div>
+
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-route/angular-route.js"></script>
+
+    <script src="app/feed/feed.js"></script>
+    <script src="app/user/user.js"></script>
+    <script src="app/services/services.js"></script>
+    <script src="app/app.js"></script>
+  </body>
+</html>
