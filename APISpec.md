@@ -8,6 +8,7 @@ Name | Description | Validation | Required?
 -----|------------- | --------- | ---
 popular | Popular articles | Bool | 
 category | Articles of the specified categories | Array of Strings | 
+page | Page # for newsfeed. 20 articles / page | Number | 
 
 #### Examples
 

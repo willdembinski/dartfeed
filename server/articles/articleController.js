@@ -8,42 +8,50 @@ module.exports = {
 
   getArticles : function (req, res, next) {
 
-  //   numPopularArticles = 5;
-  //   // get query parameters for popular and for categories
+    numPopularArticles = 5;
+    numArticlesPerPage = 20;
+    // get query parameters for popular and for categories
 
-  //   var popular = req.query.popular;
-  //   var categories = req.query.category;
+    var popular = req.query.popular; 
+    var categories = req.query.category.split(',');
 
-  //   // if popular = true
-  //     // get most popular articles
-  //     // add these articles to the set, which we will return
+    // if popular = true
+      // get most popular articles
+      // add these articles to the set, which we will return
 
-  //   if ( popular && categories) {
-  //     res.send('Must specify either popular OR categories, not both.');
-  //   } else if ( popular ) {
-  //     Article.find({}).sort({ visitsCount: -1 })
-  //       .then(function (topArticles) {
-  //         topArticles.splice(numPopularArticles,topArticles.length);
-  //         res.send(topArticles);
-  //         return topArticles;
-  //       }, function (err) {
-  //         console.error(err);
-  //       });
-  //   } else if ( categories) {
-  //     resBody = [];
-  //     categories.forEach(function (category) {
-        
-  //     });     
+    if ( popular && categories) {
+      res.send('Must specify either popular OR categories, not both.');
+    } else if ( popular ) {
+      Article.find({}).sort({ visitsCount: -1 })
+        .then(function (topArticles) {
+          topArticles.splice(numPopularArticles,topArticles.length);
+          console.log('entered here');
+          res.send(topArticles);
+          return topArticles;
+        }, function (err) {
+          console.error(err);
+        });
+    } else if ( categories) {
+      var resBody = [];
+      var catPromises = [];
+      console.log(categories);
 
+      categories.forEach(function (category) {
+        catPromises.push(Category.findOne({ name: category})
+          .then(function (cat) {
+            resBody.push(cat.articles);
+          }, function (err) {
+            console.error(err);
+          }));
+      });
 
-  //   }
+      Promise.all(catPromises)
+        .then(function () {
+          res.send(JSON.stringify(resBody));
+        });
+          
+    }
 
-  //   if ( categories )
-  //     Category.find({})
-  //     // get all articles with the provided categories
-  //     // add these articles to the set, which we will return
-
-  //   // send articles
   },
 
   insertArticles : function (req, res, next) {
