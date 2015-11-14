@@ -8,6 +8,7 @@ var passport = require('passport')
 var FacebookStrategy = require('passport-facebook').Strategy;
 var config = require('./config.js'); 
 var User = require('./users/userModel.js'); 
+var logger = require('./middleware/logger')
 
 mongoose.connect('mongodb://localhost/dartfeed'); 
 
@@ -54,6 +55,10 @@ passport.use(new FacebookStrategy({
   }
 ));
 
+
+app.use(logger);
+app.use(bodyParser.json());
+app.use('/', expressRouter); 
 
 passport.serializeUser(function(user, done) {
   done(null, user);

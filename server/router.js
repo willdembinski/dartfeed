@@ -2,7 +2,8 @@ var authController = require('./users/authController');
 var userController = require('./users/userController'); 
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
-var config = require('./config.js'); 
+// var config = require('./config.js'); 
+var articleController = require('./articles/articleController'); 
 
 
 module.exports = function (router) {
