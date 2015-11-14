@@ -24,9 +24,9 @@ module.exports = function (router) {
   // POST /api/articles
     // accept an array of articles 
 
-  router.get('/api/articles', articleController.getArticles);
+  //router.get('/api/articles', articleController.getArticles);
 
-  router.post('/api/articles', articleController.insertArticles);
+  //router.post('/api/articles', articleController.insertArticles);
 
   // CATEGORIES?
   // how do we handle inserting categories?

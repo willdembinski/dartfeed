@@ -22,6 +22,9 @@ module.exports = {
   },
 
   updateUser: function(req, res, next){
+    //use req.user to save back the updates
+
+
     User.find({fbId: req.params.user_id}, function (err, users){
       if(err){
         res.send(err);
