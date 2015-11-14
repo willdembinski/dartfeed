@@ -85,8 +85,6 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-//set up router 
-app.use('/', expressRouter); 
 router(expressRouter); 
 
 app.listen(8000); 
