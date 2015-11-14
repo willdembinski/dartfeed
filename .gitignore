@@ -5,3 +5,5 @@ server/config.js
 keys/
 build/
 dist/
+client/lib
+server/config.js
