@@ -14,6 +14,7 @@ mongoose.connect('mongodb://localhost/dartfeed');
 
 var app = express();
 var expressRouter = express.Router(); 
+app.use(express.static(__dirname + '/../client'));
 
 //cookie parser
 app.use(cookieParser());
@@ -33,41 +34,55 @@ passport.use(new FacebookStrategy({
     //profileFields: ['email', 'profileUrl']
   },
   function(accessToken, refreshToken, profile, done) {
-    process.nextTick(function(){
       console.log(accessToken);
-      console.log(refreshToken);
       console.log(profile);
 
       ///store in the db 
       User.findOne({fbId:profile.id}, function(err, user){
         if(!user){
-          User.create({
+          return User.create({
             username: profile.displayName,
             fbToken: accessToken, 
             fbId: profile.id
-          })
+          });
+
         } else {
-          console.log(err);
+          //return existing user
+          return user; 
         }
+      })
+      .then(function (user){
+        console.log("then user ", user);
+        done(null, user); 
       });
-      done(null, profile); 
-    })
   }
 ));
-
 
 app.use(logger);
 app.use(bodyParser.json());
 app.use('/', expressRouter); 
 
+//get called after login - updates session with user.id 
 passport.serializeUser(function(user, done) {
-  done(null, user);
+  console.log("login uid", user.id);
+  done(null, user.id);
 });
 
-passport.deserializeUser(function(user, done) {
-  console.log("deserializeUser");
-  //console.log(user);
-  done(null, user);
+//called on subsequent requests to server
+passport.deserializeUser(function(id, done) {
+  console.log("deserializeUser", id);
+
+  User.findById(id, function (err, user){
+    if(user){
+      console.log("found user");
+      //if id exists in DB - call done with id - id will be on req.user going forward
+      done(null, user); 
+    } else {
+      console.log("didn't find user");
+      //if not, call done with false 
+      done (null, false); 
+    }
+  });
 });
 
 //set up router 
