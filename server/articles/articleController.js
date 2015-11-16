@@ -12,7 +12,7 @@ module.exports = {
     numArticlesPerPage = 20;
 
     var popular = req.query.popular; 
-    var categories = req.query.category.split(',');
+    var categories = req.query.category;
 
     if ( popular && categories) {
       res.send('Must specify either popular OR categories, not both.');
@@ -27,6 +27,7 @@ module.exports = {
           console.error(err);
         });
     } else if ( categories) {
+      categories = categories.split(',');      
       var resBody = [];
       var catPromises = [];
       console.log(categories);
