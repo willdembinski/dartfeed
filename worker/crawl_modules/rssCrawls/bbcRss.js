@@ -46,26 +46,59 @@ function _feedParseAsync(){
   });
 }
 
+
+function test(collection,position,cb){
+    if(position === collection.length){
+      return;
+    }
+  setTimeout(function(){
+
+    _imageRetrieveAsync(collection[position].link,{})
+    .then(function(body){
+        var response = collection[position];
+        var mongoObj = {};
+        mongoObj.source = "BBC";
+        mongoObj.title = response.title;
+        mongoObj.linkURL = response.link;
+        mongoObj.date = new Date(response.published).toISOString();
+        mongoObj.summary = response.content;
+        mongoObj.categories=[];
+        mongoObj.imgURL = _parseBody(body).trim();
+        cb(mongoObj);
+    }).catch(function(err){
+      console.log(err);
+    });
+
+    test(collection,position+1,cb)
+
+  },3000)
+
+}
+
+
 function bbcParser(){  //pass init a callback and vroom vroom to the boom boom.
   var self = this;
   this.init = function(cb){
+    position = 0;
     _feedParseAsync().then(function(responses){
-      responses.forEach(function(response){
-        _imageRetrieveAsync(response.link,{})
-        .then(function(body){
-            var mongoObj = {};
-            mongoObj.source = "BBC";
-            mongoObj.title = response.title;
-            mongoObj.linkURL = response.link;
-            mongoObj.date = new Date(response.published).toISOString();
-            mongoObj.summary = response.content;
-            mongoObj.categories=[];
-            mongoObj.imgURL = _parseBody(body).trim();
-            cb(mongoObj);
-        }).catch(function(err){
-          console.log(err);
-        });
-      });
+      test(responses,0,cb);
+
+      // responses.forEach(function(response){
+      //   _imageRetrieveAsync(response.link,{})
+      //   .then(function(body){
+      //       var mongoObj = {};
+      //       mongoObj.source = "BBC";
+      //       mongoObj.title = response.title;
+      //       mongoObj.linkURL = response.link;
+      //       mongoObj.date = new Date(response.published).toISOString();
+      //       mongoObj.summary = response.content;
+      //       mongoObj.categories=[];
+      //       mongoObj.imgURL = _parseBody(body).trim();
+      //       cb(mongoObj);
+      //   }).catch(function(err){
+      //     console.log(err);
+      //   });
+      // });
     });
   }
 }
