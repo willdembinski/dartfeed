@@ -8,8 +8,16 @@ angular.module('dartnews.services', [])
     });
   }
 
+  var getCategories = function (){
+    return $http({
+      url: '/api/categories', 
+      method: 'GET'
+    });
+  }
+
   return {
-    getUserProfile: getUserProfile
+    getUserProfile: getUserProfile,
+    getCategories: getCategories
   }
 
 })

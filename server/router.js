@@ -4,6 +4,7 @@ var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var config = require('./config.js'); 
 var articleController = require('./articles/articleController'); 
+var categoryController = require('./categories/categoryController'); 
 
 
 module.exports = function (router) {
@@ -21,6 +22,8 @@ module.exports = function (router) {
 
   router.get('/api/articles', articleController.getArticles);
   router.post('/api/articles', articleController.insertArticles);
+
+  router.get('/api/categories', categoryController.getCategories);
 }
 
 
