@@ -17,11 +17,4 @@ var ArticleSchema = new mongoose.Schema({
   metadata : String
 });
 
-ArticleSchema.methods.insertArticle = function (data) {
-  var article = new Article(data);
-
-  // need to look up the categoryID from the category in order to 
-  article.create(data);
-}
-
 module.exports = mongoose.model('Article', ArticleSchema);
