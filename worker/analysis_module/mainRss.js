@@ -5,6 +5,7 @@ var hrNewsRSS = require("../crawl_modules/rssCrawls/hrNewsRss.js")
 var mashRSS = require("../crawl_modules/rssCrawls/mashableRss.js")
 var nprRSS = require("../crawl_modules/rssCrawls/nprRss.js")
 var tCrunchRSS = require("../crawl_modules/rssCrawls/techCrunchRss.js")
+var request = require('request');
 
 
 
@@ -30,10 +31,10 @@ var sendToDb = function(obj) {
   }
 
   request.post({
-      url: 'http://127.0.0.1/api/articles', //URL to hit
-     //  headers: {
-     //   "Content-Type: application/json"
-     // },
+      url: 'http://127.0.0.1:8000/api/articles', //URL to hit
+      headers: {
+       "Content-Type: application/json"
+     },
      json: obj
 
   }, function(error, response, body){
