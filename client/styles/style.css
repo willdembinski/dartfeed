@@ -1,12 +1,27 @@
 .main-title {
   text-align: center;
+  border: 1px solid #000000;
+  display: fixed;
+}
+
+.publisher {
+  color: #BFBFBF;
 }
 
 .article {
-  background-color: #549585;
-  border: 1px solid #000000;
+  /*border: 1px solid #000000;*/
+  background-color: #E4F1FE;
 }
 
 .article-title {
   text-align: center;
+}
+
+
+div.article-card{
+  width: 23%;
+  border-style:solid;
+  border-width:1px;
+  margin-left:1%;
+
 }
