@@ -41,34 +41,44 @@ function _feedParseAsync(){
   });
 }
 
+
+
+
+function test(collection,position,cb){
+    if(position === collection.length){
+      return;
+    }
+  setTimeout(function(){
+    var response = collection[position];
+    var mongoObj = {};
+    mongoObj.source = response.feed.name;
+    mongoObj.title = response.title;
+    mongoObj.linkURL = response.link;
+    mongoObj.date = new Date(response.published).toISOString();
+    mongoObj.categories=[];
+    mongoObj.summary = _parseBody(response.content).trim();
+    mongoObj.imgURL = _parseContentForImage(response.content);
+    cb(mongoObj);
+    test(collection,position+1,cb)
+  },3000)
+
+}
+
 function tCrunchParser(){  //pass init a callback and vroom vroom to the boom boom.
   var self = this;
   this.init = function(cb){
     _feedParseAsync().then(function(responses){
-      responses.forEach(function(response){
-        var mongoObj = {};
-        mongoObj.source = response.feed.name;
-        mongoObj.title = response.title;
-        mongoObj.linkURL = response.link;
-        mongoObj.date = new Date(response.published).toISOString();
-        mongoObj.categories=[];
-        mongoObj.summary = _parseBody(response.content).trim();
-        mongoObj.imgURL = _parseContentForImage(response.content);
-        cb(mongoObj);
-      });
-    }).catch(function(err){
-      console.log(err)
+      test(responses,0,cb);
     });
   }
 }
 
-
 module.exports = tCrunchParser;
-// var qq = new tCrunchParser();
+var qq = new tCrunchParser();
 
-// qq.init(function(result){
-//   console.log(result);
-// })
+qq.init(function(result){
+  console.log(result);
+})
 
 
 
