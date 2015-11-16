@@ -18,18 +18,48 @@ var tCrunchRSS = new tCrunchRSS();
 
 var i = 1;
 
-var objCollection = [];
+// var objCollection = [];
 
 var x = 1000;
 
 
+var sendToDb = function(obj) {
+  if(obj === null) {
+    console.log("Debug this: obj is null; return");
+    return;
+  }
+
+  request.post({
+      url: 'http://127.0.0.1/api/articles', //URL to hit
+     //  headers: {
+     //   "Content-Type: application/json"
+     // },
+     json: obj
+
+  }, function(error, response, body){
+    // console.log("response from Monk:", response.statusMessage);
+    if(error) {
+      console.log(error);
+
+    } else {
+      console.log(response);
+    }
+  });
 
 
-bbcRSS.init(function(obj){
+
+
+
+
+
+}
+
+
+var collectCategories = function() {
+  // console.log("collectCegories called");
+
+  bbcRSS.init(function(obj){
   // console.log(obj);
-
-  // objCollection.push(obj);
-
 
   feedCat.analyzeContentCallbackPromise(obj.summary)
   .then(function(category) {
@@ -42,6 +72,7 @@ bbcRSS.init(function(obj){
     }
     obj.category = [category];
     console.log(obj.category);
+    sendToDb(obj);
   })
   .catch(function(error) {
     console.log("Error", error);
@@ -49,9 +80,11 @@ bbcRSS.init(function(obj){
 
   );
 
+});
 
-})
+}
 
+collectCategories();
 
 // cnetRSS.init(function(obj){
 //   console.log(obj);
@@ -80,7 +113,7 @@ bbcRSS.init(function(obj){
 // })
 
 
-var text = ["It's no secret that the U.S. healthcare system is in desperate need of change"];
+// var text = ["It's no secret that the U.S. healthcare system is in desperate need of change"];
 
 // feedCat.analyzeContentCallback(text, function(err, category) {
 //     if(err) {
