@@ -8,7 +8,8 @@ var passport = require('passport')
 var FacebookStrategy = require('passport-facebook').Strategy;
 var config = require('./config.js'); 
 var User = require('./users/userModel.js'); 
-var logger = require('./middleware/logger')
+var logger = require('./middleware/logger');
+var defaultUser = require('./middleware/defaultUser');
 
 mongoose.connect('mongodb://localhost/dartfeed'); 
 
@@ -60,7 +61,7 @@ passport.use(new FacebookStrategy({
 
 app.use(logger);
 app.use(bodyParser.json());
-app.use('/', expressRouter); 
+//app.use('/', expressRouter); 
 
 //get called after login - updates session with user.id 
 passport.serializeUser(function(user, done) {
@@ -80,11 +81,28 @@ passport.deserializeUser(function(id, done) {
     } else {
       console.log("didn't find user");
       //if not, call done with false 
-      done (null, false); 
+      done(null, false); 
     }
   });
 });
 
+app.use(function (req, res, next){
+  console.log("user setting conditional");
+  console.log(req.originalUrl);
+  console.log(req.user);
+  if(req.originalUrl === '/api/auth/callback'){
+    next();
+  }
+  if(!req.user){
+    console.log("true!");
+    defaultUser(req, res, next);
+  } else {
+    next();
+  }
+});
+
+//set up router 
+app.use('/', expressRouter); 
 router(expressRouter); 
 
 app.listen(8000); 

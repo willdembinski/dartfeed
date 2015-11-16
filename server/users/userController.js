@@ -3,8 +3,8 @@ var User = require('./userModel.js');
 module.exports = {
 
   getCurrentUser: function (req, res, next){
-    console.log(req.user);
-    var user = req.user; 
+    console.log("logged in user: ", req.user);
+    var user = req.user;
     res.send(user); 
   },
 
