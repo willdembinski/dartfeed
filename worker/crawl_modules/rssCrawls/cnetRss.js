@@ -57,29 +57,50 @@ function _feedParseAsync(){
   });
 }
 
+
+
+function test(collection,position,cb){
+    if(position === collection.length){
+      return;
+    }
+  setTimeout(function(){
+
+    _imageRetrieveAsync(collection[position].link,{})
+    .then(function(body){
+        var response = collection[position];
+        mongoObj = {};
+        mongoObj.source = "CNET";
+        mongoObj.title = response.title;
+        mongoObj.linkURL = response.link;
+        mongoObj.date = new Date(response.published).toISOString();
+        mongoObj.summary = _extractContent(response.content);
+        mongoObj.categories=[];
+        mongoObj.imgURL = _parseBody(body).trim();
+        cb(mongoObj);
+    }).catch(function(err){
+      console.log(err);
+    });
+
+    test(collection,position+1,cb)
+
+  },3000)
+
+}
+
+
+
+
+
+
 function cnetParser(){
   var self = this;
   this.init = function(cb){
-    _feedParseAsync().then(function(responses){
-      responses.forEach(function(response){
-        _imageRetrieveAsync(response.link,{})
-        .then(function(body){
-            mongoObj = {};
-            mongoObj.source = "CNET";
-            mongoObj.title = response.title;
-            mongoObj.linkURL = response.link;
-            mongoObj.date = new Date(response.published).toISOString();
-            mongoObj.summary = _extractContent(response.content);
-            mongoObj.categories=[];
-            mongoObj.imgURL = _parseBody(body).trim();
-            cb(mongoObj);
-        }).catch(function(err){
-          console.log(err);
-        });
-      });
+  _feedParseAsync().then(function(responses){
+    test(responses,0,cb);
     });
-  }
+  };
 }
+
 module.exports = cnetParser;
 
 // var qq = new cnetParser();

@@ -54,27 +54,45 @@ function _feedParseAsync(){
   });
 }
 
+
+function test(collection,position,cb){
+    if(position === collection.length){
+      return;
+    }
+  setTimeout(function(){
+
+    _imageRetrieveAsync(collection[position].link,{})
+    .then(function(body){
+        var response = collection[position];
+        var mongoObj = {};
+        mongoObj.source = response.feed.name;
+        mongoObj.title = response.title;
+        mongoObj.linkURL = response.link;
+        mongoObj.date = new Date(response.published).toISOString();
+        mongoObj.summary = response.title; //no other possible place to get this atm for this rss feed
+        mongoObj.categories=[];
+        mongoObj.imgURL = _parseBody(body).trim();
+        cb(mongoObj);
+    }).catch(function(err){
+      console.log(err);
+    });
+
+    test(collection,position+1,cb)
+
+  },3000)
+
+}
+
+
+
+
+
+
 function hrNewsParser(){
   var self = this;
   this.init = function(cb){
-    _feedParseAsync()
-    .then(function(responses){
-      responses.forEach(function(response){
-        _imageRetrieveAsync(response.link,{})
-        .then(function(body){
-            var mongoObj = {};
-            mongoObj.source = response.feed.name;
-            mongoObj.title = response.title;
-            mongoObj.linkURL = response.link;
-            mongoObj.date = new Date(response.published).toISOString();
-            mongoObj.summary = response.title; //no other possible place to get this atm for this rss feed
-            mongoObj.categories=[];
-            mongoObj.imgURL = _parseBody(body).trim();
-            cb(mongoObj);
-        }).catch(function(err){
-          console.log(err);
-        })
-      })
+  _feedParseAsync().then(function(responses){
+    test(responses,0,cb);
     })
   }
 }

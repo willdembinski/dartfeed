@@ -82,23 +82,6 @@ function bbcParser(){  //pass init a callback and vroom vroom to the boom boom.
     position = 0;
     _feedParseAsync().then(function(responses){
       test(responses,0,cb);
-
-      // responses.forEach(function(response){
-      //   _imageRetrieveAsync(response.link,{})
-      //   .then(function(body){
-      //       var mongoObj = {};
-      //       mongoObj.source = "BBC";
-      //       mongoObj.title = response.title;
-      //       mongoObj.linkURL = response.link;
-      //       mongoObj.date = new Date(response.published).toISOString();
-      //       mongoObj.summary = response.content;
-      //       mongoObj.categories=[];
-      //       mongoObj.imgURL = _parseBody(body).trim();
-      //       cb(mongoObj);
-      //   }).catch(function(err){
-      //     console.log(err);
-      //   });
-      // });
     });
   }
 }
