@@ -1,9 +1,10 @@
-angular.module('dartnews', [
+var dart = angular.module('dartnews', [
   'dartnews.services',
   'dartnews.feed',
   'dartnews.user',
   'ngRoute'
 ])
+
 .config(function ($routeProvider, $httpProvider) {
   $routeProvider
     .when('/user', {
@@ -19,4 +20,22 @@ angular.module('dartnews', [
       templateUrl: '/app/feed/feed.html',
       controller: 'FeedController'
     });
+});
+
+dart.directive('errSrc', function() {
+  return {
+    link: function(scope, element, attrs) {
+      element.bind('error', function() {
+        if (attrs.src != attrs.errSrc) {
+          attrs.$set('src', attrs.errSrc);
+        }
+      });
+      
+      attrs.$observe('ngSrc', function(value) {
+        if (!value && attrs.errSrc) {
+          attrs.$set('src', attrs.errSrc);
+        }
+      });
+    }
+  }
 });
