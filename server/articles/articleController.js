@@ -12,7 +12,26 @@ module.exports = {
     numArticlesPerPage = 20;
 
     var popular = req.query.popular; 
-    var categories = req.query.category;
+    //var categories = req.query.category;
+    console.log('THE USER OBJECT: ', req.user.categories);
+    console.log(req.user.categories);
+    console.log('STRINGIFIED: ', JSON.parse(JSON.stringify(req.user.categories[0])).name);
+    console.log('NOT STRINGIFIED: ', req.user.categories[0].name);
+
+    var categories = req.user.categories.map(function (cat) {
+      return 'asdgadsfg',JSON.parse(JSON.stringify(cat)).name
+    });
+
+    // for ( cat in req.user.categories ) {
+    //   console.log(cat);
+    //   console.log(req.user.categories[cat]);
+    // }
+    // var categories = req.user.categories.map(function(cat) {
+    //   // console.log('here the cat: ' + cat);
+    //   return cat.name;
+    // });
+    
+    // console.log(categories);
 
     if ( popular && categories) {
       res.send('Must specify either popular OR categories, not both.');
@@ -26,21 +45,24 @@ module.exports = {
         }, function (err) {
           console.error(err);
         });
-    } else if ( categories) {
-      categories = categories.split(',');      
+    } else if ( categories.length ) {
+      //categories = categories.split(',');      
       var resBody = [];
       var catPromises = [];
-      console.log(categories);
+      //console.log(categories);
 
       categories.forEach(function (category) {
         catPromises.push(Category.findOne({ name: category})
           .then(function (cat) {
-            resBody.push(cat.articles);
+            if ( cat ) {
+              resBody.push(cat.articles);
+            } else {
+              resBody.push()
+            }
           }, function (err) {
             console.error(err);
           }));
       });
-
       Promise.all(catPromises)
         .then(function () {
           res.send(JSON.stringify(resBody));
