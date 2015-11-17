@@ -28,10 +28,18 @@ angular.module('dartnews.services', [])
     });
   }
 
+  var getArticlesForUser = function (){
+    return $http({
+      url: '/api/articles', 
+      method: 'GET'
+    });
+  }
+
   return {
     getUserProfile: getUserProfile,
     getCategories: getCategories,
-    updateUserCategories: updateUserCategories
+    updateUserCategories: updateUserCategories, 
+    getArticlesForUser: getArticlesForUser
   }
 
 })
