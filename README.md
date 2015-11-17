@@ -18,10 +18,6 @@ A news aggregator for all of your tech news.
 1. [Team](#team)
 1. [Contributing](#contributing)
 
-## Usage
-
-TO DO
-
 
 ## Requirements
 
@@ -39,10 +35,6 @@ npm install
 bower install
 ```
 
-### Roadmap
-
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
-
 ### Future Features
 
 - Followers
@@ -51,6 +43,4 @@ View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
 - Recommended articles
 - Define more categories 
 
-## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
