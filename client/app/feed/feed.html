@@ -1,10 +1,11 @@
 <div ng-controller="FeedController"class="container" ng-init="getArticlesForUser()">
   <section class="jumbotron text-center landingHeader">
       <h1 class="jumbotron-heading">Dart Feed</h1>
-      <p class="lead text-muted">When you just want something cool to read...</p>
+      <p class="lead text-muted">Targeted Tech News</p>
       <p>
         <a href="/api/auth/facebook" class="btn btn-primary">Sign In with Facebook!</a><br>
-        <a href="/api/auth/signout">Logout</a>
+        <a href="/api/auth/signout">Logout</a><br>
+        <a href="/#/user">Profile</a>
       </p>
 
         <div class="monkeyLogo">
@@ -21,7 +22,7 @@
           {{obj[0].title}}
             <a href="{{obj[0].linkURL}}">
               <img class="articleImg center-block" src="{{obj[0].imgURL}}" err-SRC="http://assets.inhabitat.com/wp-content/blogs.dir/1/files/2011/11/data-farm-537x399.jpg">
-              <p class="card-text" style="color:black">{{obj[0].summary}}</p>
+   <!--            <p class="card-text" style="color:black">{{obj[0].summary}}</p> -->
               
             </a>
           </div>
