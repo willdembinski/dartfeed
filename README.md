@@ -1,6 +1,6 @@
-# Project Name
+# DartFeed
 
-> Pithy project description
+A news aggregator for all of your tech news.
 
 ## Team
 
@@ -20,14 +20,12 @@
 
 ## Usage
 
+TO DO
+
 
 ## Requirements
 
-- Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+- Node
 
 ## Development
 
@@ -45,11 +43,13 @@ bower install
 
 View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
 
+### Future Features
 
-#### Future Features
-
-
-
+- Followers
+- Users page styling
+- Popular articles
+- Recommended articles
+- Define more categories 
 
 ## Contributing
 
