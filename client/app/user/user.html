@@ -1,23 +1,25 @@
 <div ng-controller="UserController" class="container" ng-init="getUserProfile()">
-  <h1>User</h1>
+  <a href="/#/feed">Back to Feed</a>
+  <h1>User Profile</h1>
   <div class="profile">
-    
-  {{user.data.username}}
+  <br>    
+  <h2>{{user.data.username}}</h2>
   </div>
   <br>
+  <h4>Selected Categories</h4>
+  <span class="categories" ng-repeat="category in user.data.categories"> 
+    {{category.name}} &nbsp; &nbsp;
+  </span>
   <br>
-
+  <br>
   <div class="profileCategories">
-  <label for="repeatSelect"> Choose categories: </label><br>
+  <label for="repeatSelect"> <h4>Add new categories</h4> </label><br>
   <select name="repeatSelect" id="repeatSelect" ng-model="selectedCategory">
     <option value="">---Please select---</option> <!-- not selected / blank option -->
     <option ng-repeat="option in categories.data" value="{{option.name}}">
     {{option.name}}
-  </select><br>
+  </select>
   <button ng-click="addCategoriesToUser()">Add category</button><br>
-  <tt>Selected = {{selectedCategory}}</tt><br>
-
-  {{user.data.categories}}
   
 
   </div>
