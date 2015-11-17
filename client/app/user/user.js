@@ -11,4 +11,8 @@ angular.module('dartnews.user', [])
         $scope.categories = categories; 
       })
   }
+  $scope.addCategoriesToUser = function (){
+    Feed.updateUserCategories($scope.selectedCategory);
+  }
+
 });

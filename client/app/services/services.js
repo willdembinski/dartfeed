@@ -15,9 +15,23 @@ angular.module('dartnews.services', [])
     });
   }
 
+  var updateUserCategories = function (category){
+    console.log(category);
+    return $http({
+      url: '/api/categories', 
+      method: 'PUT',
+      data: {
+        categories: {
+          category: category.toString()
+        }
+      }
+    });
+  }
+
   return {
     getUserProfile: getUserProfile,
-    getCategories: getCategories
+    getCategories: getCategories,
+    updateUserCategories: updateUserCategories
   }
 
 })

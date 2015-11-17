@@ -28,6 +28,11 @@ module.exports = {
     //res.send(req.user); //client needs to write this out
     res.redirect('/#/user');
 
+  }, 
+
+  signout: function (req, res, next){
+    req.session.destroy();
+    res.redirect('/#/feed');
   }
 
 }
