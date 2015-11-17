@@ -8,8 +8,39 @@ angular.module('dartnews.services', [])
     });
   }
 
+  var getCategories = function (){
+    return $http({
+      url: '/api/categories', 
+      method: 'GET'
+    });
+  }
+
+  var updateUserCategories = function (category){
+    console.log(category);
+    return $http({
+      url: '/api/categories', 
+      method: 'PUT',
+      data: {
+        categories: {
+          category: category.toString()
+        }
+      }
+    });
+  }
+
+  var getArticlesForUser = function (){
+    return $http({
+      url: '/api/articles', 
+      method: 'GET'
+    });
+  }
+
   return {
-    getUserProfile: getUserProfile
+    getUserProfile: getUserProfile,
+    getCategories: getCategories,
+    updateUserCategories: updateUserCategories, 
+    getArticlesForUser: getArticlesForUser
+
   }
 
 })

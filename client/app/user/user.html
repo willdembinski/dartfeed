@@ -9,12 +9,13 @@
 
   <div class="profileCategories">
   <label for="repeatSelect"> Choose categories: </label><br>
-  <select name="repeatSelect" id="repeatSelect" ng-model="data.repeatSelect">
+  <select name="repeatSelect" id="repeatSelect" ng-model="selectedCategory">
     <option value="">---Please select---</option> <!-- not selected / blank option -->
-    <option ng-repeat="option in user.data.categories" value="{{option}}">
+    <option ng-repeat="option in categories.data" value="{{option.name}}">
+    {{option.name}}
   </select><br>
   <button ng-click="addCategoriesToUser()">Add category</button><br>
-  <tt>repeatSelect = {{data.repeatSelect}}</tt>
+  <tt>Selected = {{selectedCategory}}</tt><br>
 
   {{user.data.categories}}
   

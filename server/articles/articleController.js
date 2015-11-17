@@ -1,7 +1,7 @@
 var Article = require('./articleModel');
 var Category = require('../categories/categoryModel');
 var Promise = require('bluebird');
-Promise.promisifyAll(require('mongoose'));
+Promise.promisifyAll(require("mongoose"));
 
 
 module.exports = {
@@ -10,6 +10,7 @@ module.exports = {
 
     numPopularArticles = 5;
     numArticlesPerPage = 20;
+    // get query parameters for popular and for categories
 
     var popular = req.query.popular; 
     //var categories = req.query.category;
@@ -33,6 +34,14 @@ module.exports = {
     
     // console.log(categories);
 
+    // if popular = true
+      // get most popular articles
+      // add these articles to the set, which we will return
+
+    // if popular = true
+      // get most popular articles
+      // add these articles to the set, which we will return
+
     if ( popular && categories) {
       res.send('Must specify either popular OR categories, not both.');
     } else if ( popular ) {
@@ -45,8 +54,8 @@ module.exports = {
         }, function (err) {
           console.error(err);
         });
+
     } else if ( categories.length ) {
-      //categories = categories.split(',');      
       var resBody = [];
       var catPromises = [];
       //console.log(categories);
