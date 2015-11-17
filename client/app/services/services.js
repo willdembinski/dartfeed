@@ -40,6 +40,7 @@ angular.module('dartnews.services', [])
     getCategories: getCategories,
     updateUserCategories: updateUserCategories, 
     getArticlesForUser: getArticlesForUser
+
   }
 
 })

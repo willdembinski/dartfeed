@@ -38,6 +38,10 @@ module.exports = {
       // get most popular articles
       // add these articles to the set, which we will return
 
+    // if popular = true
+      // get most popular articles
+      // add these articles to the set, which we will return
+
     if ( popular && categories) {
       res.send('Must specify either popular OR categories, not both.');
     } else if ( popular ) {
@@ -50,6 +54,7 @@ module.exports = {
         }, function (err) {
           console.error(err);
         });
+
     } else if ( categories.length ) {
       var resBody = [];
       var catPromises = [];
