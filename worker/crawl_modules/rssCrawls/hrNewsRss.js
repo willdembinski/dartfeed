@@ -81,10 +81,10 @@ function hrNewsParser(){
 
 module.exports = hrNewsParser;
 
-// var qq = new hrNewsParser();
-// qq.init(function(res){
-//   console.log(res)
-// });
+var qq = new hrNewsParser();
+qq.init(function(res){
+  console.log(res)
+});
 
 
 
