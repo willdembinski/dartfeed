@@ -76,9 +76,9 @@ function tCrunchParser(){  //pass init a callback and vroom vroom to the boom bo
 module.exports = tCrunchParser;
 var qq = new tCrunchParser();
 
-qq.init(function(result){
-  console.log(result);
-})
+// qq.init(function(result){
+//   console.log(result);
+// })
 
 
 

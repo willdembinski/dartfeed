@@ -17,11 +17,8 @@ var mashRSS = new mashRSS();
 var nprRSS = new nprRSS();
 var tCrunchRSS = new tCrunchRSS();
 
-var i = 1;
 
-// var objCollection = [];
 
-var x = 1000;
 
 
 var sendToDb = function(obj) {
@@ -33,33 +30,57 @@ var sendToDb = function(obj) {
   request.post({
       url: 'http://127.0.0.1:8000/api/articles', //URL to hit
       headers: {
-       "Content-Type: application/json"
+       "Content-Type": "application/json"
      },
-     json: obj
+     json: [obj]
 
-  }, function(error, response, body){
+   }, function(error, response, body){
     // console.log("response from Monk:", response.statusMessage);
     if(error) {
       console.log(error);
 
     } else {
-      console.log(response);
+      // console.log(response);
     }
   });
 
-
-
-
-
-
-
 }
-
 
 var collectCategories = function() {
   // console.log("collectCegories called");
+  var timeoutFactor = 120000;
 
-  bbcRSS.init(function(obj){
+
+  setTimeout( function() { 
+
+    tCrunchRSS.init(function(obj){
+  // console.log(obj);
+
+  feedCat.analyzeContentCallbackPromise(obj.summary)
+  .then(function(category) {
+    if(obj === undefined) {
+      console.log("Some bad place");
+    }
+    if(obj.categories === undefined) {
+      // console.log("Yes")
+      obj.categories = ["GeneralTech"];
+    }
+    obj.categories = [category];
+    // console.log(obj.categories);
+    sendToDb(obj);
+  })
+  .catch(function(error) {
+    console.log("Error", error);
+  });
+}) 
+  }, (0 * timeoutFactor));
+
+
+
+
+  setTimeout( function() { 
+
+   cnetRSS.init(function(obj){
   // console.log(obj);
 
   feedCat.analyzeContentCallbackPromise(obj.summary)
@@ -77,61 +98,118 @@ var collectCategories = function() {
   })
   .catch(function(error) {
     console.log("Error", error);
-  }
+  });
+}) 
+ }, (1 * timeoutFactor));
 
-  );
 
-});
+
+  setTimeout( function() {
+
+    hrNewsRSS.init(function(obj){
+      // console.log(obj);
+
+      feedCat.analyzeContentCallbackPromise(obj.summary)
+      .then(function(category) {
+        if(obj === undefined) {
+          console.log("Some bad place");
+        }
+        if(obj.category === undefined) {
+          // console.log("Yes")
+          obj.category = ["GeneralTech"];
+        }
+        obj.category = [category];
+        console.log(obj.category);
+        sendToDb(obj);
+      })
+      .catch(function(error) {
+        console.log("Error", error);
+      });
+    }) 
+  }, (2 * timeoutFactor));
+
+
+  setTimeout( function(){
+
+    mashRSS.init(function(obj){
+      // console.log(obj);
+
+      feedCat.analyzeContentCallbackPromise(obj.summary)
+      .then(function(category) {
+        if(obj === undefined) {
+          console.log("Some bad place");
+        }
+        if(obj.category === undefined) {
+          // console.log("Yes")
+          obj.category = ["GeneralTech"];
+        }
+        obj.category = [category];
+        console.log(obj.category);
+        sendToDb(obj);
+      })
+      .catch(function(error) {
+        console.log("Error", error);
+      });
+    }) 
+  }, (3 * timeoutFactor));
+
+
+  setTimeout( function(){
+
+    nprRSS.init(function(obj){
+      // console.log(obj);
+
+      feedCat.analyzeContentCallbackPromise(obj.summary)
+      .then(function(category) {
+        if(obj === undefined) {
+          console.log("Some bad place");
+        }
+        if(obj.category === undefined) {
+          // console.log("Yes")
+          obj.category = ["GeneralTech"];
+        }
+        obj.category = [category];
+        console.log(obj.category);
+        sendToDb(obj);
+      })
+      .catch(function(error) {
+        console.log("Error", error);
+      });
+    }) 
+  }, (4 * timeoutFactor));
+
+
+  setTimeout( function(){
+
+    bbcRSS.init(function(obj){
+      // console.log(obj);
+
+      feedCat.analyzeContentCallbackPromise(obj.summary)
+      .then(function(category) {
+        if(obj === undefined) {
+          console.log("Some bad place, Debug this");
+        }
+        if(obj.category === undefined) {
+          // console.log("Yes")
+          obj.category = ["GeneralTech"];
+        }
+        obj.category = [category];
+        // console.log(obj.category);
+        sendToDb(obj);
+      })
+      .catch(function(error) {
+        console.log("Error", error);
+      });
+    }) 
+  }, (4 * timeoutFactor));
+
+
 
 }
 
 collectCategories();
 
-// cnetRSS.init(function(obj){
-//   console.log(obj);
-//   //var categories = monkeyAPI(obj.content)
-//   //stuff to obj
-// })
-// hrNewsRSS.init(function(obj){
-//   console.log(obj);
-//   //var categories = monkeyAPI(obj.content)
-//   //stuff to obj
-// })
-// mashRSS.init(function(obj){
-//   console.log(obj);
-//   //var categories = monkeyAPI(obj.content)
-//   //stuff to obj
-// })
-// nprRSS.init(function(obj){
-//   console.log(obj);
-//   //var categories = monkeyAPI(obj.content)
-//   //stuff to obj
-// })
-// tCrunchRSS.init(function(obj){
-//   console.log(obj);
-//   //var categories = monkeyAPI(obj.content)
-//   //stuff to obj
-// })
 
-
-// var text = ["It's no secret that the U.S. healthcare system is in desperate need of change"];
-
-// feedCat.analyzeContentCallback(text, function(err, category) {
-//     if(err) {
-//         console.log("The err is", err);
-//     } else {
-//         console.log("Category is: ", category);
-//     }
-// })
-
-
-// feedCat.analyzeContentCallbackPromise(text)
-// .then(function(category) {
-//   console.log(category);
-// })
-// .catch(function(error) {
-//   console.log("Error", error);
-// })
 
 
 

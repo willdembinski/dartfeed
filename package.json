@@ -2,7 +2,7 @@
   "name": "dart_feed",
   "version": "1.0.0",
   "description": "A news aggregation platform",
-  "main": "index.js",
+  "main": "server/server.js",
   "scripts": {
     "test": "test"
   },
