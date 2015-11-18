@@ -3,44 +3,19 @@ var Category = require('../categories/categoryModel');
 var Promise = require('bluebird');
 Promise.promisifyAll(require("mongoose"));
 
-
 module.exports = {
 
   getArticles : function (req, res, next) {
 
-    numPopularArticles = 5;
-    numArticlesPerPage = 20;
-    // get query parameters for popular and for categories
+    numPopularArticles = 5; // number of articles to return for 'popular' parameter
+    numArticlesPerPage = 20; // for future feature: add 'offset' parameter to limit # of articles returned
 
     var popular = req.query.popular; 
-    //var categories = req.query.category;
-    console.log('THE USER OBJECT: ', req.user.categories);
-    console.log(req.user.categories);
-    console.log('STRINGIFIED: ', JSON.parse(JSON.stringify(req.user.categories[0])).name);
-    console.log('NOT STRINGIFIED: ', req.user.categories[0].name);
 
     var categories = req.user.categories.map(function (cat) {
-      return 'asdgadsfg',JSON.parse(JSON.stringify(cat)).name
+      return JSON.parse(JSON.stringify(cat)).name // very weird bug: can only access 'name' property by doing this
+      // if you figure out why, let Greg know
     });
-
-    // for ( cat in req.user.categories ) {
-    //   console.log(cat);
-    //   console.log(req.user.categories[cat]);
-    // }
-    // var categories = req.user.categories.map(function(cat) {
-    //   // console.log('here the cat: ' + cat);
-    //   return cat.name;
-    // });
-    
-    // console.log(categories);
-
-    // if popular = true
-      // get most popular articles
-      // add these articles to the set, which we will return
-
-    // if popular = true
-      // get most popular articles
-      // add these articles to the set, which we will return
 
     if ( popular && categories) {
       res.send('Must specify either popular OR categories, not both.');
@@ -48,7 +23,6 @@ module.exports = {
       Article.find({}).sort({ visitsCount: -1 })
         .then(function (topArticles) {
           topArticles.splice(numPopularArticles,topArticles.length);
-          console.log('entered here');
           res.send(topArticles);
           return topArticles;
         }, function (err) {
@@ -58,7 +32,6 @@ module.exports = {
     } else if ( categories.length ) {
       var resBody = [];
       var catPromises = [];
-      //console.log(categories);
 
       categories.forEach(function (category) {
         catPromises.push(Category.findOne({ name: category})
@@ -75,10 +48,8 @@ module.exports = {
       Promise.all(catPromises)
         .then(function () {
           res.send(JSON.stringify(resBody));
-        });
-          
+        });   
     }
-
   },
 
   insertArticles : function (req, res, next) {
