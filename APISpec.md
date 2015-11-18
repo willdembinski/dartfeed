@@ -5,11 +5,11 @@
 
 #### Parameters
 
-Name | Description | Validation | 
------|------------- | --------- | 
-popular | Popular articles | Bool | 
-category | Articles of the specified categories | Comma-delimited string | 
-page | Page # for newsfeed. 20 articles / page | Number | 
+Name | Description | Validation | Notes |
+-----|------------- | --------- | ----- |
+popular | Popular articles | Bool | Not currently used by app |
+offset | To get article <offset> and onwards | Number | Needs to be implemented |
+limit | Limit the number of articles returned | Number | Needs to be implemented |
 
 #### Examples
 
@@ -46,7 +46,7 @@ curl -i http://127.0.0.1:8000/api/articles -H "Content-Type: application/json" -
 
 #### Examples
 ```json
-
+curl -i http://127.0.0.1:8000/api/users
 ```
 
 
@@ -56,17 +56,24 @@ curl -i http://127.0.0.1:8000/api/articles -H "Content-Type: application/json" -
 
 #### Examples
 ```json
+curl -i http://127.0.0.1:8000/api/user/56453c61deffcac712aadc6b
 ```
 
 ### GET /api/categories
 
-Name | Description | Validation
------|------------- | ---------
+
+#### Examples
+```json
+curl -i http://http://localhost:8000/api/categories
+```
 
 ### PUT /api/categories
 
-Name | Description | Validation
------|------------- | ---------
+
+#### Examples
+```json
+curl -i -X PUT -H "Content-Type: application/json" http://localhost:8000/api/categories -d '{"categories" : {"category":"C"}}'
+```
 
 
 
