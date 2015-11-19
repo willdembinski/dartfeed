@@ -4,8 +4,9 @@ angular.module('dartnews.feed', [])
 
 	$scope.getArticlesForUser = function (){
     Feed.getArticlesForUser()
-      .then(function (articles){
+    .then(function (articles){
         $scope.articles = articles;
-      });
-    }
-	});
+    });
+  }
+});
+
