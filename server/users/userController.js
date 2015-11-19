@@ -9,7 +9,7 @@ module.exports = {
   },
 
   getUser: function(req, res, next){
-    User.find({id: req.params.user_id}, function (err, user){
+    User.find({_id: req.params.user_id}, function (err, user){
       if(err){
         console.log(err);
       } else{  
