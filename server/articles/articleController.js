@@ -1,7 +1,7 @@
 var Article = require('./articleModel');
 var Category = require('../categories/categoryModel');
 var Promise = require('bluebird');
-Promise.promisifyAll(require("mongoose"));
+Promise.promisifyAll(require('mongoose'));
 
 module.exports = {
 
@@ -16,10 +16,8 @@ module.exports = {
       return JSON.parse(JSON.stringify(cat)).name // very weird bug: can only access 'name' property by doing this
       // if you figure out why, let Greg know
     });
-
-    if ( popular && categories) {
-      res.send('Must specify either popular OR categories, not both.');
-    } else if ( popular ) {
+    
+    if ( popular ) {
       Article.find({}).sort({ visitsCount: -1 })
         .then(function (topArticles) {
           topArticles.splice(numPopularArticles,topArticles.length);
@@ -28,7 +26,7 @@ module.exports = {
         }, function (err) {
           console.error(err);
         });
-
+    
     } else if ( categories.length ) {
       var resBody = [];
       var catPromises = [];
@@ -72,7 +70,6 @@ module.exports = {
             if ( cat ) {
               catData.push({categoryID : cat._id, name: cat.name});
               cat.articles.push(articleData);
-              console.log(cat.articles); 
               articleData.categories = temp;
               return cat.save();
             } else {
